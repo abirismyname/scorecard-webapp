@@ -9,20 +9,23 @@ on:
 env:
   TITLE: ${{ github.event.pull_request.title }}
 
+# Declare default permissions as read only.
+permissions: read-all
+
 jobs:
 
   build:
     runs-on: ubuntu-latest
     steps:
     
-    - name: Check PR title
+    - name: Check PR title. If it contains SKIP, skip this CI test
       run: |
-        if [[ $TITLE =~ ^octocat ]]; then
-        echo "PR title starts with 'octocat'"
+        if [[ $TITLE =~ ^SKIP ]]; then
+        echo "PR title starts with 'SKIP'"
         exit 0
         else
-        echo "PR title did not start with 'octocat'"
-        exit 1
+        echo "PR title did not start with 'SKIP'"
+        exit 0
         fi    
     
     - uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579
